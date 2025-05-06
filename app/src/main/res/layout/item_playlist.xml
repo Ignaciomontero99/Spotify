@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@android:color/transparent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:padding="12dp">
+
+    <ImageView
+        android:id="@+id/ivPlaylistCover"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:background="@drawable/rounded_album_background"
+        android:clipToOutline="true"
+        android:contentDescription="@string/playlist_cover"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_music" />
+
+    <TextView
+        android:id="@+id/tvTitulo"
+        android:layout_width="120dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="8dp"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:maxLines="1"
+        android:text="Título de la Playlist"
+        android:textColor="@android:color/white"
+        android:textSize="12sp"
+        android:textStyle="bold" />
+</LinearLayout>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="32dp"
+    android:background="@drawable/bg_dialog_transparent"
+    android:gravity="center_horizontal"
+    android:layout_gravity="center">
+
+    <TextView
+        android:id="@+id/tvDialogTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nueva Playlist"
+        android:textColor="@color/spotify_white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginBottom="16dp"/>
+
+    <EditText
+        android:id="@+id/etPlaylistName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Nombre de la playlist"
+        android:padding="16dp"
+        android:textColor="@android:color/white"
+        android:textColorHint="#AAAAAA"/>
+
+    <Button
+        android:id="@+id/btnCreate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Crear"
+        android:textColor="@android:color/white"
+        android:backgroundTint="@color/spotify_green"
+        android:layout_marginTop="24dp"/>
+</LinearLayout>
