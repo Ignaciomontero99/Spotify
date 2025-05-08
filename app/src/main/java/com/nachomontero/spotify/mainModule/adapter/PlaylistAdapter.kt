@@ -15,21 +15,26 @@ import com.nachomontero.spotify.mainModule.MainActivity
 import com.nachomontero.spotify.mainModule.listener.OnClickListener
 
 class PlaylistAdapter(
-    private val listener: OnClickListener,
-    private val isClickable: Boolean = true
+    private val listener: OnClickListener
 ) : ListAdapter<Playlist, RecyclerView.ViewHolder>(PlaylistDiffCallBack()) {
     private lateinit var mContext: Context
+
+    // Variable para el listener de long click
+    var onPlaylistLongClickListener: ((Playlist) -> Unit)? = null
 
     inner class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
         val binding = ItemPlaylistBinding.bind(view)
 
         fun setListener(playlist: Playlist) {
-            if (isClickable) {
-                binding.root.setOnClickListener {
-                    listener.onClickPlaylist(playlist.id)
-                }
-            } else {
-                binding.root.setOnClickListener(null)
+            // Manejo de click normal
+            binding.root.setOnClickListener {
+                listener.onClickPlaylist(playlist.id)
+            }
+
+            // Manejo de long click
+            binding.root.setOnLongClickListener {
+                onPlaylistLongClickListener?.invoke(playlist)
+                true // Indicar que el long click ha sido manejado
             }
         }
     }
@@ -47,7 +52,6 @@ class PlaylistAdapter(
 
         with(holder as ViewHolder) {
             setListener(playlist)
-
             binding.tvTitulo.text = playlist.titulo
         }
     }

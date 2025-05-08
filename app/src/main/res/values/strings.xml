@@ -11,4 +11,6 @@
     <string name="podcast_cover">Imagen Podcast</string>
     <string name="add">Añadir</string>
     <string name="album_image">Imagen Album</string>
+    <string name="user_profile">Perfil Usuario</string>
+    <string name="episode_image">Image de episodio</string>
 </resources>

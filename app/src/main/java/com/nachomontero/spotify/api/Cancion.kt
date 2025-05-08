@@ -5,5 +5,6 @@ data class Cancion(
     val titulo: String,
     val duracion: String,
     val numeroReproducciones: Int,
-    val album: Album
+    val album: Album?
 )
+

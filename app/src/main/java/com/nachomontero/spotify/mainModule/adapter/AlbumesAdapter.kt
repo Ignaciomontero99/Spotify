@@ -16,8 +16,7 @@ import com.nachomontero.spotify.mainModule.MainActivity
 import com.nachomontero.spotify.mainModule.listener.OnClickListener
 
 class AlbumesAdapter(
-    private val listener: OnClickListener,
-    private val isClickable: Boolean = true
+    private val listener: OnClickListener
 ) : ListAdapter<Album, RecyclerView.ViewHolder>(AlbumDiffCallBack()) {
         private lateinit var mContext: Context
 
@@ -25,12 +24,8 @@ class AlbumesAdapter(
             val binding = ItemAlbumBinding.bind(view)
 
             fun setListener(album: Album) {
-                if (isClickable) {
-                    binding.root.setOnClickListener {
-                        listener.onClickAlbum(album.id)
-                    }
-                } else {
-                    binding.root.setOnClickListener(null)
+                binding.root.setOnClickListener {
+                    listener.onClickAlbum(album.id)
                 }
             }
 
@@ -51,7 +46,8 @@ class AlbumesAdapter(
                 setListener(album)
 
                 binding.tvTitulo.text = album.titulo
-                binding.tvArtista.text = album.artista.nombre
+                // binding.tvArtista.text = album.artista.nombre
+                // binding.tvArtista.text = album.artista.firstOrNull()?.nombre ?: "Artista Desconocido"
 
                 Glide.with(mContext)
                     .load(album.imagen)

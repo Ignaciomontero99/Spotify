@@ -15,23 +15,18 @@ import com.nachomontero.spotify.databinding.ItemPodcastBinding
 import com.nachomontero.spotify.mainModule.listener.OnClickListener
 
 class PodcastAdapter(
-    // private val listener: OnClickListener
-
+    private val listener: OnClickListener
 ) : ListAdapter<Podcast, RecyclerView.ViewHolder>(PodcastDiffCallBack()) {
     private lateinit var mContext: Context
 
     inner class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
         val binding = ItemPodcastBinding.bind(view)
 
-//        fun setListener(podcast: Podcast) {
-//            if (isClickable) {
-//                binding.root.setOnClickListener {
-//                    listener.onClickPodcast(podcast.id)
-//                }
-//            } else {
-//                binding.root.setOnClickListener(null)
-//            }
-//        }
+        fun setListener(podcast: Podcast) {
+            binding.root.setOnClickListener {
+                listener.onClickPodcast(podcast.id)
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -46,7 +41,7 @@ class PodcastAdapter(
         val podcast = getItem(position)
 
         with(holder as ViewHolder) {
-            // setListener(podcast)
+            setListener(podcast)
 
             binding.tvTitulo.text = podcast.titulo
 

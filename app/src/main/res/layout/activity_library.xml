@@ -8,20 +8,34 @@
     android:background="@color/spotify_black">
 
     <!-- Header -->
+    <ImageButton
+        android:id="@+id/btnUser"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@android:color/transparent"
+        android:contentDescription="@string/user_profile"
+        android:src="@drawable/ic_user"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/spotify_white" />
+
+    <!-- Botón añadir -->
+
     <TextView
         android:id="@+id/tvTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="10sp"
+        android:layout_marginTop="24dp"
         android:text="Tu Biblioteca"
         android:textColor="@color/spotify_white"
         android:textSize="24sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginTop="16dp"
-        android:layout_marginStart="16dp"/>
+        app:layout_constraintStart_toEndOf="@+id/btnUser"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Botón añadir -->
     <ImageButton
         android:id="@+id/btnAdd"
         android:layout_width="40dp"
@@ -54,6 +68,7 @@
             android:orientation="horizontal">
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnPlaylist"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/Widget.Material3.Button.OutlinedButton"
@@ -62,6 +77,7 @@
                 app:strokeColor="@color/spotify_gray" />
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnAlbums"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/Widget.Material3.Button.OutlinedButton"
@@ -71,6 +87,7 @@
                 android:layout_marginStart="8dp"/>
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnPodcast"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/Widget.Material3.Button.OutlinedButton"
@@ -78,16 +95,6 @@
                 android:textColor="@color/spotify_white"
                 app:strokeColor="@color/spotify_gray"
                 android:layout_marginStart="8dp"/>
-
-            <com.google.android.material.button.MaterialButton
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                style="@style/Widget.Material3.Button.OutlinedButton"
-                android:text="Artistas"
-                android:textColor="@color/spotify_white"
-                app:strokeColor="@color/spotify_gray"
-                android:layout_marginStart="8dp"/>
-
         </LinearLayout>
     </HorizontalScrollView>
 

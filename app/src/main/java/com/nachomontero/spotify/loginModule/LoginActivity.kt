@@ -3,6 +3,7 @@ package com.nachomontero.spotify.loginModule
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -32,14 +33,17 @@ class LoginActivity : AppCompatActivity() {
             val username = binding.etLoginUsername.text.toString()
             val password = binding.etLoginPassword.text.toString()
 
+            val usuario = Usuario(username = username, password = password)
+
             // Aquí deberías hacer la llamada a la API
-            loginUserFromApi(username, password)
+            loginUserFromApi(usuario)
         }
 
         binding.btnRegister.setOnClickListener {
             val name = binding.etRegisterName.text.toString()
             val email = binding.etRegisterEmail.text.toString()
             val password = binding.etRegisterPassword.text.toString()
+
 
             registerLocalUser(name, email, password)
         }
@@ -64,29 +68,32 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun loginUserFromApi(username: String, password: String) {
+    private fun loginUserFromApi(usuario: Usuario) {
         val retrofit = Retrofit.Builder()
             .baseUrl(Constants.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
-        val loginService = retrofit.create(LoginService::class.java)
-        val usuario = Usuario(username = username, password= password)
+        val userService = retrofit.create(LoginService::class.java)
 
         lifecycleScope.launch {
             try {
-                val user = loginService.login(usuario)
-                SessionManager.saveSession(this@LoginActivity, user.id.toString(), "api")
-                goToMain()
-            } catch (e: Exception) {
-                // Imprimir el mensaje de error completo para debug
-                e.printStackTrace()
-                Toast.makeText(this@LoginActivity, "Error en el login: ${e.message}",
-                    Toast.LENGTH_SHORT).show()
-            }
+                val user = userService.getUser()
 
+                // Compara lo introducido con lo que devuelve la API
+                if (usuario.username == user.username && usuario.password == user.password) {
+                    SessionManager.saveSession(this@LoginActivity, user.id.toString(), "api")
+                    goToMain()
+                } else {
+                    Toast.makeText(this@LoginActivity, "Usuario o contraseña incorrectos", Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Toast.makeText(this@LoginActivity, "Error al conectar con el servidor", Toast.LENGTH_SHORT).show()
+            }
         }
     }
+
 
     private fun registerLocalUser(name: String, username: String, password: String) {
         val prefs = getSharedPreferences("local_users", MODE_PRIVATE)

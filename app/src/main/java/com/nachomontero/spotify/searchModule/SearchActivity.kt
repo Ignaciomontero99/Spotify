@@ -7,15 +7,17 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.nachomontero.spotify.R
+import com.nachomontero.spotify.api.Cancion
 import com.nachomontero.spotify.databinding.ActivityLibraryBinding
 import com.nachomontero.spotify.databinding.ActivitySearchBinding
+import com.nachomontero.spotify.episodeModule.EpisodeListActivity
 import com.nachomontero.spotify.libraryModule.LibraryActivity
 import com.nachomontero.spotify.mainModule.MainActivity
 import com.nachomontero.spotify.mainModule.listener.OnClickListener
 import com.nachomontero.spotify.podcastModule.PodcastListActivity
 import com.nachomontero.spotify.songModule.SongListActivity
 
-abstract class SearchActivity : AppCompatActivity(), OnClickListener {
+class SearchActivity : AppCompatActivity(), OnClickListener {
     private lateinit var mBinding: ActivitySearchBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,8 +40,6 @@ abstract class SearchActivity : AppCompatActivity(), OnClickListener {
         mBinding.cardPodcast.setOnClickListener {
             onClickPodcast()
         }
-
-
     }
 
     private fun setupBottomNav() {
@@ -75,6 +75,26 @@ abstract class SearchActivity : AppCompatActivity(), OnClickListener {
         val intent = Intent(this, SongListActivity::class.java)
         intent.putExtra("origin", "search")
         startActivity(intent)
+    }
+
+    override fun onClickPlaylist(id: Int) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onClickAlbum(id: Int) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onClickPodcast(id: Int) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onClickSong(id: Int) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onSongAddedToPlaylist(cancion: Cancion) {
+        TODO("Not yet implemented")
     }
 
 }

@@ -10,13 +10,14 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.nachomontero.spotify.R
+import com.nachomontero.spotify.api.Cancion
 import com.nachomontero.spotify.api.common.Constants
 import com.nachomontero.spotify.api.service.AlbumesService
 import com.nachomontero.spotify.api.service.PlaylistService
 import com.nachomontero.spotify.api.service.PodcastService
 import com.nachomontero.spotify.databinding.ActivityMainBinding
+import com.nachomontero.spotify.episodeModule.EpisodeListActivity
 import com.nachomontero.spotify.libraryModule.LibraryActivity
-import com.nachomontero.spotify.loginModule.LoginActivity
 import com.nachomontero.spotify.mainModule.adapter.AlbumesAdapter
 import com.nachomontero.spotify.mainModule.adapter.PlaylistAdapter
 import com.nachomontero.spotify.mainModule.adapter.PodcastAdapter
@@ -45,7 +46,6 @@ class MainActivity : AppCompatActivity(),OnClickListener {
     private lateinit var podcastAdapter: PodcastAdapter
     private lateinit var podcastLinearLayoutManager: LinearLayoutManager
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -67,7 +67,7 @@ class MainActivity : AppCompatActivity(),OnClickListener {
     }
 
     private fun setUpRecyclerViewPodcast() {
-        podcastAdapter = PodcastAdapter()
+        podcastAdapter = PodcastAdapter(this)
         podcastLinearLayoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
         mBinding.rvPodcast.apply {
@@ -86,6 +86,13 @@ class MainActivity : AppCompatActivity(),OnClickListener {
     }
 
     private fun getPodcast() {
+        val userId = SessionManager.getUserId(this)
+
+        if (userId == -1) {
+            Log.e("MainActivity", "Usuario no logueado o ID no válido")
+            return
+        }
+
         val retrofit = Retrofit.Builder()
             .baseUrl(Constants.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
@@ -95,16 +102,13 @@ class MainActivity : AppCompatActivity(),OnClickListener {
 
         lifecycleScope.launch(Dispatchers.IO) {
             try {
-                val podcastList = service.getPodcast()
+                val podcastList = service.getPodcastFromUser(userId)
                 withContext(Dispatchers.Main) {
                     Log.i("Podcast", podcastList.toString())
                     podcastAdapter.submitList(podcastList)
                 }
             } catch (e: Exception) {
                 Log.e("Podcast", e.message.toString())
-                (e as? HttpException)?.let {
-
-                }
             }
         }
     }
@@ -129,6 +133,13 @@ class MainActivity : AppCompatActivity(),OnClickListener {
     }
 
     private fun getAlbumes() {
+        val userId = SessionManager.getUserId(this)
+
+        if (userId == -1) {
+            Log.e("MainActivity", "Usuario no logueado o ID no válido")
+            return
+        }
+
         val retrofit = Retrofit.Builder()
             .baseUrl(Constants.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
@@ -138,7 +149,7 @@ class MainActivity : AppCompatActivity(),OnClickListener {
 
         lifecycleScope.launch(Dispatchers.IO) {
             try {
-                val albumList = service.getAlbumes()
+                val albumList = service.getAlbumes(userId)
                 withContext(Dispatchers.Main) {
                     Log.i("Album", albumList.toString())
                     albumAdapter.submitList(albumList)
@@ -146,7 +157,7 @@ class MainActivity : AppCompatActivity(),OnClickListener {
             } catch (e: Exception) {
                 Log.e("Album", e.message.toString())
                 (e as? HttpException)?.let {
-
+                    Log.e("Album", "Error: ${e.message}", e)
                 }
             }
         }
@@ -171,6 +182,12 @@ class MainActivity : AppCompatActivity(),OnClickListener {
     }
 
     private fun getPlaylist() {
+        val userId = SessionManager.getUserId(this)
+        if (userId == -1) {
+            Log.e("MainActivity", "Usuario no logueado o ID no válido")
+            return
+        }
+
         val retrofit = Retrofit.Builder()
             .baseUrl(Constants.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
@@ -180,26 +197,18 @@ class MainActivity : AppCompatActivity(),OnClickListener {
 
         lifecycleScope.launch(Dispatchers.IO) {
             try {
-                // Aquí obtenemos la lista de listas de playlists
-                val playlistList = service.getPlaylist()
-
-                // Tomamos el primer elemento de la lista (la lista de playlists)
-                val playlists = playlistList.firstOrNull()?.map { it.playlist } ?: emptyList()
+                val playlists = service.getPlaylist(userId)
 
                 withContext(Dispatchers.Main) {
                     Log.i("Playlist", playlists.toString())
-                    playlistAdapter.submitList(playlists) // Pasamos la lista de playlists al adaptador
+                    playlistAdapter.submitList(playlists)
                 }
             } catch (e: Exception) {
-                Log.e("Playlist", e.message.toString())
-                (e as? HttpException)?.let {
-                    // Manejo de errores
-                }
+                Log.e("Playlist", "Error: ${e.message}", e)
             }
         }
     }
 
-    // Configura el BottomNavigationView
     private fun setupBottomNav() {
         mBinding.bottomNavigationView.selectedItemId = R.id.action_home
 
@@ -225,13 +234,29 @@ class MainActivity : AppCompatActivity(),OnClickListener {
     override fun onClickPlaylist(id: Int) {
         val intent = Intent(this, SongListActivity::class.java)
         intent.putExtra("origin", "home")
+        intent.putExtra("playlistId", id)
         startActivity(intent)
     }
 
     override fun onClickAlbum(id: Int) {
         val intent = Intent(this, SongListActivity::class.java)
         intent.putExtra("origin", "home")
+        intent.putExtra("albumId", id)
         startActivity(intent)
     }
 
+    override fun onClickPodcast(id: Int) {
+        val intent = Intent(this, EpisodeListActivity::class.java)
+        intent.putExtra("origin", "home")
+        intent.putExtra("podcastId", id)
+        startActivity(intent)
+    }
+
+    override fun onClickSong(id: Int) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onSongAddedToPlaylist(cancion: Cancion) {
+        TODO("Not yet implemented")
+    }
 }

@@ -15,10 +15,20 @@
         android:theme="@style/Theme.Spotify"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".playlistModule.PlaylistActivity"
+            android:exported="false" />
+        <activity
+            android:name=".songModule.DetailModule.SongDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".episodeModule.EpisodeListActivity"
+            android:exported="false" />
+        <activity
             android:name=".loginModule.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -36,8 +46,7 @@
             android:exported="false" />
         <activity
             android:name=".mainModule.MainActivity"
-            android:exported="false">
-        </activity>
+            android:exported="false" />
     </application>
 
 </manifest>
