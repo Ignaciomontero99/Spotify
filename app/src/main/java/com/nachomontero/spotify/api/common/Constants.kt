@@ -11,9 +11,16 @@ object Constants {
     const val PATH_PODCASTS = "/podcasts"
     const val PATH_SONGS = "/canciones"
 
+    const val PATH_INFO_SONG = "/cancion/{cancionId}"
+    const val PATH_INFO_EPISODE_FROM_PODCAST = "/podcast/{podcastId}/capitulo/{capituloId}"
+
     const val PATH_SONGS_FROM_ALBUMS = "/album/{albumId}/canciones"
     const val PATH_SONGS_FROM_PLAYLIST = "/playlist/{playlistId}/canciones"
     const val PATH_EPISODE_FROM_PODCAST = "/podcast/{podcastId}/capitulos"
+
+    const val PATH_SONGS_INTO_PLAYLIST = "/playlist/{playlistId}/canciones/{cancionId}"
+
+    const val PATH_DELETE_SONG_FROM_PLAYLIST = "/playlist/{playlistId}/canciones/{cancionId}"
 
 
 }

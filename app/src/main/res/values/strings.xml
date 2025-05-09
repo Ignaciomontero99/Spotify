@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Spotify</string>
+    <string name="app_name">Sinponyk</string>
     <string name="menu_home">Home</string>
     <string name="searching_song">Buscar</string>
     <string name="menu_library">Mi biblioteca</string>

@@ -2,19 +2,20 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="16dp"
-    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:background="@color/colorSurface"
     tools:context=".songModule.DetailModule.SongDetailActivity">
 
     <ImageView
         android:id="@+id/albumCover"
         android:layout_width="200dp"
-        android:layout_gravity="center"
         android:layout_height="200dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/ic_music"/>
+        android:src="@drawable/ic_music" />
 
     <TextView
         android:id="@+id/songTitle"
@@ -22,26 +23,28 @@
         android:layout_height="wrap_content"
         android:text="Título de la canción"
         android:textSize="20sp"
-        android:layout_marginTop="16dp"/>
+        android:textColor="@color/colorAccent"
+        android:layout_marginTop="16dp" />
 
     <TextView
         android:id="@+id/songDuration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/colorAccent"
         android:text="Duración"
-        android:layout_marginTop="8dp"/>
+        android:layout_marginTop="8dp" />
 
     <Button
         android:id="@+id/btnAddToPlaylist"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Añadir a playlist"
-        android:layout_marginTop="24dp"/>
+        android:layout_marginTop="24dp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/playlistRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp" />
-
 </LinearLayout>
+

@@ -1,4 +1,4 @@
-package com.nachomontero.spotify.episodeModule
+package com.nachomontero.spotify.podcastModule.episodeModule
 
 import android.content.Intent
 import android.os.Bundle
@@ -12,13 +12,13 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.nachomontero.spotify.R
 import com.nachomontero.spotify.api.common.Constants
-import com.nachomontero.spotify.api.service.EpisodoService
+import com.nachomontero.spotify.api.service.EpisodioService
 import com.nachomontero.spotify.databinding.ActivityEpisodeListBinding
-import com.nachomontero.spotify.databinding.ActivitySongListBinding
 import com.nachomontero.spotify.libraryModule.LibraryActivity
 import com.nachomontero.spotify.mainModule.MainActivity
 import com.nachomontero.spotify.mainModule.adapter.EpisodeAdapter
-import com.nachomontero.spotify.songModule.SongListActivity
+import com.nachomontero.spotify.mainModule.listener.OnClickListener
+import com.nachomontero.spotify.podcastModule.episodeModule.DetailModule.EpisodeDetailActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -26,7 +26,7 @@ import retrofit2.HttpException
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class EpisodeListActivity : AppCompatActivity() {
+class EpisodeListActivity : AppCompatActivity(), OnClickListener {
 
     private lateinit var mBinding: ActivityEpisodeListBinding
 
@@ -48,6 +48,7 @@ class EpisodeListActivity : AppCompatActivity() {
         }
         
         val podcastId = intent.getIntExtra("podcastId", -1)
+
         
         setUpRecyclerViewEpisode(podcastId)
 
@@ -61,7 +62,7 @@ class EpisodeListActivity : AppCompatActivity() {
     }
 
     private fun setUpRecyclerViewEpisode(podcastId: Int) {
-        episodeAdapter = EpisodeAdapter()
+        episodeAdapter = EpisodeAdapter(this)
         episodeLinearLayoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
         mBinding.recyclerViewEpisodes.apply {
@@ -78,7 +79,7 @@ class EpisodeListActivity : AppCompatActivity() {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
-        val service = retrofit.create(EpisodoService::class.java)
+        val service = retrofit.create(EpisodioService::class.java)
 
         lifecycleScope.launch(Dispatchers.IO) {
             try {
@@ -133,5 +134,28 @@ class EpisodeListActivity : AppCompatActivity() {
                 else -> false
             }
         }
+    }
+
+    override fun onClickPlaylist(id: Int) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onClickAlbum(id: Int) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onClickPodcast(id: Int) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onClickSong(id: Int) {
+        TODO("Not yet implemented")
+    }
+
+    override fun onClickEpisode(id: Int) {
+        val intent = Intent(this, EpisodeDetailActivity::class.java)
+        intent.putExtra("podcastId", id)
+        intent.putExtra("episodeId", id)
+        this.startActivity(intent)
     }
 }

@@ -9,7 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Etiqueta"
-        android:textColor="@color/spotify_gray"
+        android:textColor="@color/colorSurface"
         android:textSize="12sp"
         android:layout_marginBottom="4dp" />
 
@@ -18,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:enabled="false"
-        android:textColor="@color/spotify_white"
+        android:textColor="@color/colorOnPrimary"
         android:textSize="14sp"
-        android:backgroundTint="@color/spotify_gray" />
+        android:backgroundTint="@color/colorSurface" />
 </LinearLayout>

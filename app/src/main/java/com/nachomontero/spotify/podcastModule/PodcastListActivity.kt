@@ -11,12 +11,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.nachomontero.spotify.R
-import com.nachomontero.spotify.api.Cancion
 import com.nachomontero.spotify.api.Podcast
 import com.nachomontero.spotify.api.common.Constants
 import com.nachomontero.spotify.api.service.PodcastService
 import com.nachomontero.spotify.databinding.ActivityPodcastListBinding
-import com.nachomontero.spotify.episodeModule.EpisodeListActivity
+import com.nachomontero.spotify.podcastModule.episodeModule.EpisodeListActivity
 import com.nachomontero.spotify.libraryModule.LibraryActivity
 import com.nachomontero.spotify.mainModule.MainActivity
 import com.nachomontero.spotify.mainModule.adapter.PodcastAdapter
@@ -143,7 +142,7 @@ class PodcastListActivity : AppCompatActivity(), OnClickListener {
         TODO("Not yet implemented")
     }
 
-    override fun onSongAddedToPlaylist(cancion: Cancion) {
+    override fun onClickEpisode(id: Int) {
         TODO("Not yet implemented")
     }
 }

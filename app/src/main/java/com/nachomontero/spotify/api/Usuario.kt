@@ -1,7 +1,7 @@
 package com.nachomontero.spotify.api
 
 data class Usuario (
-    val id: String? = null,
+    val id: Int,
     val username: String,
     val password: String,
     val email: String? = null,

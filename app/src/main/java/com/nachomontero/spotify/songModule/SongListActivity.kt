@@ -1,6 +1,5 @@
 package com.nachomontero.spotify.songModule
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -12,16 +11,13 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.nachomontero.spotify.R
-import com.nachomontero.spotify.api.Cancion
 import com.nachomontero.spotify.api.common.Constants
 import com.nachomontero.spotify.api.service.CancionService
-import com.nachomontero.spotify.api.service.PlaylistService
 import com.nachomontero.spotify.databinding.ActivitySongListBinding
 import com.nachomontero.spotify.libraryModule.LibraryActivity
 import com.nachomontero.spotify.mainModule.MainActivity
 import com.nachomontero.spotify.mainModule.adapter.SongAdapter
 import com.nachomontero.spotify.mainModule.listener.OnClickListener
-import com.nachomontero.spotify.sharedPreferences.SessionManager
 import com.nachomontero.spotify.songModule.DetailModule.SongDetailActivity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -49,6 +45,7 @@ class SongListActivity : AppCompatActivity(), OnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
 
+
         val playlistId = intent.getIntExtra("playlistId", -1)
         val albumId = intent.getIntExtra("albumId", -1)
 
@@ -70,22 +67,10 @@ class SongListActivity : AppCompatActivity(), OnClickListener {
             insets
         }
         setupBottomNav()
-
-        // Configurar el listener para el long click en las canciones
-        songAdapter.onSongLongClickListener = { cancion ->
-            // Eliminar la canción de SharedPreferences
-            eliminarCancionLocal(cancion)
-        }
-
-        // Actualiza el RecyclerView con las canciones locales al iniciar la actividad
-        actualizarRecyclerViewConCancionesLocales(context = this)
     }
 
     private fun setUpRecyclerViewSongAlbum(albumId: Int) {
-        val retrofit = provideRetrofit()
-        val playlistService = retrofit.create(PlaylistService::class.java)
-
-        songAdapter = SongAdapter(this, playlistService)
+        songAdapter = SongAdapter(this)
         songLinearLayoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
         mBinding.recyclerViewSongs.apply {
@@ -120,10 +105,7 @@ class SongListActivity : AppCompatActivity(), OnClickListener {
     }
 
     private fun setUpRecyclerViewSongPlaylist(playlistId: Int) {
-        val retrofit = provideRetrofit()
-        val playlistService = retrofit.create(PlaylistService::class.java)
-
-        songAdapter = SongAdapter(this, playlistService)
+        songAdapter = SongAdapter(this)
         songLinearLayoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
         mBinding.recyclerViewSongs.apply {
@@ -157,10 +139,7 @@ class SongListActivity : AppCompatActivity(), OnClickListener {
     }
 
     private fun setUpRecyclerViewSong() {
-        val retrofit = provideRetrofit()
-        val playlistService = retrofit.create(PlaylistService::class.java)
-
-        songAdapter = SongAdapter(this, playlistService)
+        songAdapter = SongAdapter(this)
         songLinearLayoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
         mBinding.recyclerViewSongs.apply {
@@ -224,24 +203,6 @@ class SongListActivity : AppCompatActivity(), OnClickListener {
             }
         }
     }
-    fun eliminarCancionLocal(cancion: Cancion) {
-        Log.d("SongListActivity", "Intentando eliminar la canción: ${cancion.titulo}")
-
-        SessionManager.eliminarCancionLocal(this, cancion)
-
-        // Actualizar el RecyclerView con las canciones locales
-        actualizarRecyclerViewConCancionesLocales(this)
-
-        // Mostrar un mensaje de confirmación
-        Toast.makeText(this, "Canción eliminada", Toast.LENGTH_SHORT).show()
-    }
-
-    fun actualizarRecyclerViewConCancionesLocales(context: Context) {
-        val cancionesLocales = SessionManager.obtenerCancionesLocalesDesdePreferences(context)
-        songAdapter.submitList(cancionesLocales)
-        songAdapter.notifyDataSetChanged()
-        Log.d("SongListActivity", "RecyclerView actualizado con canciones locales.")
-    }
 
     override fun onClickPlaylist(id: Int) {
         // Not implemented yet
@@ -257,15 +218,11 @@ class SongListActivity : AppCompatActivity(), OnClickListener {
 
     override fun onClickSong(id: Int) {
         val intent = Intent(this, SongDetailActivity::class.java)
-        intent.putExtra("cancion", id)
+        intent.putExtra("cancionId", id)
         this.startActivity(intent)
     }
 
-    override fun onSongAddedToPlaylist(cancion: Cancion) {
-        // Agregar la canción localmente en SharedPreferences
-        SessionManager.agregarCancionLocal(this, cancion)
-
-        // Actualizar el RecyclerView con las canciones locales
-        actualizarRecyclerViewConCancionesLocales(this)
+    override fun onClickEpisode(id: Int) {
+        TODO("Not yet implemented")
     }
 }

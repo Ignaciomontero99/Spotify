@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#121212">
+    android:background="#121212"
+    tools:context=".songModule.DetailModule.SongDetailActivity">
+
+    <!-- Contenido scrollable -->
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#121212"
-        android:fillViewport="true">
+        android:fillViewport="true"
+        android:background="#121212">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -21,18 +25,19 @@
 
             <!-- Buscador -->
             <androidx.cardview.widget.CardView
+                android:id="@+id/songSearch"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
+                android:layout_marginBottom="24dp"
                 app:cardCornerRadius="12dp"
-                app:cardElevation="4dp"
-                android:layout_marginBottom="24dp">
+                app:cardElevation="4dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="horizontal"
-                    android:background="#FFFFFF"
                     android:gravity="center_vertical"
+                    android:background="#FFFFFF"
                     android:paddingStart="16dp">
 
                     <ImageView
@@ -54,6 +59,14 @@
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
+            <!-- Lista de canciones -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvSongSearch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                tools:listitem="@layout/item_song" />
+
             <!-- Tarjetas de Categoría -->
             <GridLayout
                 android:id="@+id/gridCategories"
@@ -61,8 +74,8 @@
                 android:layout_height="wrap_content"
                 android:columnCount="2"
                 android:orientation="horizontal"
-                android:rowCount="1"
-                android:useDefaultMargins="true">
+                android:useDefaultMargins="true"
+                android:layout_marginTop="24dp">
 
                 <!-- Tarjeta: Canciones -->
                 <androidx.cardview.widget.CardView
@@ -78,7 +91,7 @@
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="#1DB954"
+                        android:background="@color/colorSecondaryVariant"
                         android:padding="12dp">
 
                         <TextView
@@ -113,7 +126,7 @@
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="#535353"
+                        android:background="@color/colorAccent"
                         android:padding="12dp">
 
                         <TextView
@@ -135,21 +148,19 @@
                 </androidx.cardview.widget.CardView>
 
             </GridLayout>
-
         </LinearLayout>
-
     </ScrollView>
+
+    <!-- BottomNavigationView fuera del scroll -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/spotify_black"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_gravity="bottom"
+        android:background="@color/colorPrimaryVariant"
         app:menu="@menu/menu_main"
         app:labelVisibilityMode="labeled"
         app:itemIconTint="@color/selector_bottom_nav"
         app:itemTextColor="@color/selector_bottom_nav" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

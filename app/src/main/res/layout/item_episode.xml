@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
-    android:backgroundTint="@color/spotify_gray"
+    android:backgroundTint="@color/colorPrimary"
     app:cardElevation="4dp"
     app:cardCornerRadius="12dp">
 
@@ -21,7 +21,8 @@
             android:layout_height="64dp"
             android:scaleType="centerCrop"
             android:contentDescription="@string/episode_image"
-            android:src="@drawable/ic_microphone" />
+            android:src="@drawable/ic_microphone"
+            />
 
         <LinearLayout
             android:layout_width="0dp"
@@ -35,7 +36,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Titulo episodio"
-                android:textColor="@color/spotify_black"
+                android:textColor="@color/colorOnPrimary"
                 android:textSize="16sp"
                 android:maxLines="1"
                 android:ellipsize="end" />
@@ -45,7 +46,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Descripción"
-                android:textColor="@color/spotify_white"
+                android:textColor="@color/colorOnPrimary"
                 android:textSize="14sp"
                 android:maxLines="2"
                 android:ellipsize="end"

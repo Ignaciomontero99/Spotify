@@ -10,27 +10,26 @@ import androidx.recyclerview.widget.RecyclerView
 import com.nachomontero.spotify.R
 import com.nachomontero.spotify.api.Episodio
 import com.nachomontero.spotify.databinding.ItemEpisodeBinding
-import com.nachomontero.spotify.databinding.ItemSongBinding
+import com.nachomontero.spotify.mainModule.listener.OnClickListener
 
 class EpisodeAdapter(
-    //private val listener: OnClickListener
+    private val listener: OnClickListener
 ) : ListAdapter<Episodio, RecyclerView.ViewHolder>(EpisodeDiffCallBack()) {
     private lateinit var mContext: Context
 
     inner class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
         val binding = ItemEpisodeBinding.bind(view)
 
-//        fun setListener(episodio: Episodio) {
-//            binding.root.setOnClickListener {
-//                listener.onClickEpisodio(episodio.id)
-//            }
-//        }
+        fun setListener(episode: Episodio) {
+            binding.root.setOnClickListener {
+                listener.onClickEpisode(episode.id)
+            }
+        }
+
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         mContext = parent.context
-
         val view = LayoutInflater.from(mContext).inflate(R.layout.item_episode, parent, false)
-
         return ViewHolder(view)
     }
 
@@ -38,7 +37,7 @@ class EpisodeAdapter(
         val episode = getItem(position)
 
         with (holder as ViewHolder) {
-            //setListener(episodie)
+            setListener(episode)
             binding.episodeTitle.text = episode.titulo
             binding.episodeDescript.text = episode.descripcion
         }

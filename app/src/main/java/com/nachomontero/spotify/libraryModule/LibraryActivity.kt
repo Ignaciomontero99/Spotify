@@ -3,7 +3,6 @@ package com.nachomontero.spotify.libraryModule
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
 import android.widget.Button
 import android.widget.EditText
 import android.widget.LinearLayout
@@ -35,8 +34,6 @@ import retrofit2.converter.gson.GsonConverterFactory
 import androidx.core.graphics.toColorInt
 import androidx.core.graphics.drawable.toDrawable
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.nachomontero.spotify.api.Cancion
-import com.nachomontero.spotify.api.Playlist
 import com.nachomontero.spotify.api.Usuario
 import com.nachomontero.spotify.api.service.AlbumesService
 import com.nachomontero.spotify.api.service.LoginService
@@ -113,12 +110,6 @@ class LibraryActivity : AppCompatActivity(), OnClickListener {
             adapter = playlistAdapter
         }
         getPlaylist()
-
-        playlistAdapter.onPlaylistLongClickListener = { playlist ->
-            SessionManager.eliminarPlaylistLocal(this, playlist)
-            actualizarRecyclerViewConPlaylists()
-            Toast.makeText(this, "Playlist eliminada", Toast.LENGTH_SHORT).show()
-        }
     }
 
     private fun setupRecyclerViewAlbum() {
@@ -281,44 +272,59 @@ class LibraryActivity : AppCompatActivity(), OnClickListener {
     }
 
     private fun showNewPlaylist() {
-        val dialogView = LayoutInflater.from(this).inflate(R.layout.new_playlist, null)
+        val dialogView = layoutInflater.inflate(R.layout.new_playlist, null)
         val dialog = AlertDialog.Builder(this)
             .setView(dialogView)
+            .setCancelable(false)
             .create()
 
-        val etPlaylistName = dialogView.findViewById<EditText>(R.id.etPlaylistName)
-        val btnCreate = dialogView.findViewById<Button>(R.id.btnCreate)
+        dialog.show()
 
-        btnCreate.setOnClickListener {
-            val nombre = etPlaylistName.text.toString().trim()
-            if (nombre.isNotEmpty()) {
+        val editTextTitulo = dialogView.findViewById<EditText>(R.id.editTextTitulo)
 
-                getUsuario { usuario ->
-                    if (usuario != null) {
-                        val nuevaPlaylist = Playlist(
-                            id = (System.currentTimeMillis() % 100000).toInt(),
-                            titulo = nombre
-                        )
-                        SessionManager.agregarPlaylistLocal(this, nuevaPlaylist)
-                        actualizarRecyclerViewConPlaylists()
-                        dialog.dismiss()
-                    } else {
-                        Toast.makeText(this, "No se pudo obtener el usuario", Toast.LENGTH_SHORT).show()
-                    }
-                }
+        dialogView.findViewById<Button>(R.id.btnCrearPlaylist).setOnClickListener {
+            val titulo = editTextTitulo.text.toString().trim()
+            val numeroCanciones = 0
+            val usuarioId = SessionManager.getUserId(this)
+
+            if (titulo.isNotEmpty()) {
+                createPlaylist(usuarioId, titulo, numeroCanciones, dialog)
             } else {
-                Toast.makeText(this, "Nombre vacío", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "El título no puede estar vacío", Toast.LENGTH_SHORT).show()
             }
         }
-        dialog.show()
     }
 
+    private fun createPlaylist(usuarioId: Int, titulo: String, numeroCanciones: Int, dialog: AlertDialog) {
+        val retrofit = Retrofit.Builder()
+            .baseUrl(Constants.BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
 
-    private fun actualizarRecyclerViewConPlaylists() {
-        val playlists = SessionManager.obtenerPlaylistsDesdePreferences(this)
-        playlistAdapter.submitList(playlists)
+        val service = retrofit.create(PlaylistService::class.java)
+
+        lifecycleScope.launch(Dispatchers.IO) {
+            try {
+                val response = service.postPlaylist(usuarioId, titulo, numeroCanciones, usuarioId)
+                withContext(Dispatchers.Main) {
+                    if (response.id != null) {
+                        Toast.makeText(
+                            this@LibraryActivity,
+                            "Playlist creada exitosamente",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        dialog.dismiss()
+                        getPlaylist()
+                    }
+                }
+            } catch (e: Exception) {
+                withContext(Dispatchers.Main) {
+                    Log.e("Playlist", "Error al crear playlist: ${e.localizedMessage}", e)
+                    dialog.dismiss()
+                }
+            }
+        }
     }
-
 
     private fun showUserInfo(usuario: Usuario) {
         val dialogView = layoutInflater.inflate(R.layout.user_info, null)
@@ -373,7 +379,12 @@ class LibraryActivity : AppCompatActivity(), OnClickListener {
         TODO("Not yet implemented")
     }
 
-    override fun onSongAddedToPlaylist(cancion: Cancion) {
+    override fun onClickEpisode(id: Int) {
         TODO("Not yet implemented")
     }
+
+//    override fun onClickEpisodio(id: Int) {
+//        TODO("Not yet implemented")
+//    }
+
 }

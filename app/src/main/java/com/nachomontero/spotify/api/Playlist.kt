@@ -4,5 +4,5 @@ data class Playlist(
     val id: Int,
     val titulo: String,
     val fechaCreacion: String? = null,
-    val usuario: Usuario? = null
+    val usuario: Usuario
 )

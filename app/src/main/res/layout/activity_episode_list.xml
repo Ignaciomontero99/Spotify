@@ -4,13 +4,13 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/spotify_black">
+    android:background="@color/colorBackground">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@color/spotify_black"
+        android:background="@color/colorBackground"
         android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
         android:navigationIcon="@drawable/ic_arrow"
         android:titleTextColor="@android:color/white"
@@ -37,7 +37,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        android:background="@color/spotify_black"
+        android:background="@color/colorPrimaryVariant"
         app:menu="@menu/menu_main"
         app:labelVisibilityMode="labeled"
         app:itemIconTint="@color/selector_bottom_nav"
